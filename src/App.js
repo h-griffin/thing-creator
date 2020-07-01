@@ -19,9 +19,11 @@ class App extends React.Component{
                 }
             ],
             popularThing : 'water',
-            latestThing :'',
+            latestThing : null //{name:'none',type:'none'}
         }
         this.thingCreatedHandler = this.thingCreatedHandler.bind(this);
+
+        this.state.latestThing = this.state.thingList[0];
     }
 
     thingCreatedHandler(thing){
@@ -52,7 +54,7 @@ class ThingForm extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            name : 'name a thing!',
+            name : '',
             thingType : '',
         }
         this.handleChange = this.handleChange.bind(this);
@@ -60,10 +62,21 @@ class ThingForm extends React.Component{
     }
 
     handleChange(event){
-        const newName = event.target.value
-        this.setState({
-            name : newName
-        })
+        if(event.target.name === "thing-name"){
+            const newName = event.target.value
+            console.log('target name:',event.target.value)
+
+            this.setState({
+                name : newName,
+            })
+        }else{ //only other thing is thing-type
+            const newType = event.target.value
+            console.log('target name:',event.target.value)
+
+            this.setState({
+                type : newType
+            })
+        }
     }
 
     handleSubmit(event){
@@ -76,15 +89,20 @@ class ThingForm extends React.Component{
             <form onSubmit={this.handleSubmit}>
                 <label>
                     name:
-                    <input type='text' value={this.state.name} onChange={this.handleChange}></input>
-                </label>
+                    <input name='thing-name' type='text' value={this.state.name} onChange={this.handleChange}></input>
+                </label> <br></br>
+                <label>
+                    type:
+                    <input name='thing-type' type='text' value={this.state.type} onChange={this.handleChange}></input>
+                </label> <br></br>
+                <button>submit</button>
             </form>
         )
     }
 }
 
 function Thing(props){
-    return <li>i am thing {props.item.name}</li>
+    return <li>i am thing {props.item.name} and i am {props.item.type}</li>
 }
 
 function ThingsList(props){
@@ -105,7 +123,7 @@ function Header(props){
         <>
         <h2>things count : {props.count}</h2>
         <h2>a popular thing is: {props.popularThing}</h2>
-        <h2>latest thing is : {props.latestThing.name}</h2>
+        <h2>latest thing is : {props.latestThing.name}, type: {props.latestThing.type}</h2>
         </>
     )
 }
