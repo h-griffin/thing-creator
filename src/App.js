@@ -18,7 +18,8 @@ class App extends React.Component{
                     type : 'carbonated',
                 }
             ],
-            popularThing : 'water'
+            popularThing : 'water',
+            latestThing :'',
         }
         this.thingCreatedHandler = this.thingCreatedHandler.bind(this);
     }
@@ -26,16 +27,17 @@ class App extends React.Component{
     thingCreatedHandler(thing){
         alert(thing.name);
         const updatedThing = this.state.thingList
-        updatedThing.push({id:'?',name:'?',type:'?'})
+        updatedThing.push({id:'',name:thing.name,type:'?'})
         this.setState({
-            thingList : updatedThing
+            thingList : updatedThing,
+            latestThing : thing
         })
     }
 
     render(){
         return(
             <div className='App'>
-                <Header popularThing={this.state.popularThing} count={this.state.thingList.length}/>
+                <Header popularThing={this.state.popularThing} latestThing={this.state.latestThing} count={this.state.thingList.length}/>
                 <h1>class app</h1>
                 <main>
                     <ThingsList thingList={this.state.thingList} onThingCreate={this.thingCreatedHandler} />
@@ -44,18 +46,6 @@ class App extends React.Component{
             </div>
         )
     }
-}
-
-function ThingsList(props){
-    return(
-        <>
-        <h2>things</h2>
-        <ul>
-            {props.thingList.map(thingList => <Thing item={thingList} key={thingList.id}/>)}
-        </ul>
-        <ThingForm onThingCreate={props.onThingCreate}/>
-        </>
-    )
 }
 
 class ThingForm extends React.Component{
@@ -97,11 +87,25 @@ function Thing(props){
     return <li>i am thing {props.item.name}</li>
 }
 
+function ThingsList(props){
+    return(
+        <>
+        <h2>things</h2>
+        <ul>
+            {props.thingList.map(thingList => <Thing item={thingList} key={thingList.id}/>)}
+        </ul>
+        <ThingForm onThingCreate={props.onThingCreate}/>
+        </>
+    )
+}
+
+
 function Header(props){
     return (
         <>
         <h2>things count : {props.count}</h2>
-        <h2>popular thing is: {props.popularThing}</h2>
+        <h2>a popular thing is: {props.popularThing}</h2>
+        <h2>latest thing is : {props.latestThing.name}</h2>
         </>
     )
 }
